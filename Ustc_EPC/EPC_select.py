@@ -1,6 +1,7 @@
 from EPC_checkcode import internet_Ai
 import re
 import time
+import threading
 
 class select_lesson(internet_Ai):
     def judge_login(self):
@@ -24,7 +25,8 @@ class select_lesson(internet_Ai):
     def select_les(self,**kwargs):
         for li in self.list: # 从list中获取地址，post发送数据到该地址
             self.url="http://epc.ustc.edu.cn/"+li
-            self.post_html(**kwargs)
+            t=threading.Thread(target=self.post_html(**kwargs))
+            t.start()
             print("已选中"+" "+self.url)
         self.list.clear()
 
@@ -32,7 +34,7 @@ def main():
     datas={
     'submit_type':'book_submit'
     }
-    iAi=select_lesson('http://epc.ustc.edu.cn/m_practice.asp?second_id=2004')
+    iAi=select_lesson('http://epc.ustc.edu.cn/m_practice.asp?second_id=2001')
     while(True):
         if(iAi.judge_login()):
             if(iAi.capture_key()):
