@@ -42,7 +42,7 @@ def main():
     datas={
     'submit_type':'book_submit'
     }
-    iAi=select_lesson('http://epc.ustc.edu.cn/m_practice.asp?second_id=2001')
+    iAi=select_lesson('http://epc.ustc.edu.cn/m_practice.asp?second_id=2004')
     while(True):
         if(iAi.judge_login()):
             if(iAi.capture_key()):
