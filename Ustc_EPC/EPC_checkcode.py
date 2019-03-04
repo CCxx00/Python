@@ -3,11 +3,13 @@ import requests
 import re
 import json
 import os
+import time
 
 class internet_Ai(object):
     def __init__(self,url):
         self.url=url
         self.list=[]
+        self.Theard=[]
         self.Session=requests.session()
         os.makedirs('./image/', exist_ok=True)
         self.cookies=self.get_date('cookies.txt')
@@ -17,13 +19,13 @@ class internet_Ai(object):
         with open(textname, 'r') as f:
             return json.loads(f.read()) #打开文件
 
-    def get_html(self):
-        html=self.Session.get(url=self.url,headers=self.headers,cookies=self.cookies) #用get方法获取网页源代码
+    def get_html(self,get_url):
+        html=self.Session.get(url=get_url,headers=self.headers,cookies=self.cookies) #用get方法获取网页源代码
         # print(html.text)
         return BeautifulSoup(html.text,"html.parser") #使用BeautifulSoup分析
 
-    def post_html(self,**kwargs):
-        html=self.Session.post(url=self.url,data=kwargs,headers=self.headers,cookies=self.cookies) #用post方法获取网页源代码
+    def post_html(self,post_url,post_data=None):
+        html=self.Session.post(url=post_url,data=post_data,headers=self.headers,cookies=self.cookies) #用post方法获取网页源代码
         # print(html.text)
         return BeautifulSoup(html.text,"html.parser") #使用BeautifulSoup分析
 
