@@ -4,15 +4,24 @@ import time
 import threading
 
 class select_lesson(internet_Ai):
+    def __init__(self,url):
+        super().__init__(url)
+        self.list=[]
+        self.Theard=[]
+
     def post_html(self,post_url,post_data): # 改写父类post_html()
         print("开始选课:"+post_url)
-        if(re.findall("预约成功",super().post_html(post_url,post_data=post_data).get_text())): # 调用父类post_html()
+        str=super().post_html(post_url,post_data=post_data).get_text() # 调用父类post_html(),比较返回值
+        if(re.findall("预约成功",str)):
             print("选课完成:"+post_url)
+        elif(re.findall("操作失败：预约时间未到",str)):
+            print("选课失败,预约时间未到")
         else:
-            print("选课失败:"+post_url)
+            print("未知错误!")
 
     def judge_login(self):
-        if(re.findall("登录后可以查看详细信息",self.get_html(self.url).get_text())): #寻找html页面中是否有登陆后。。。
+        self.Bhtml=self.get_html(self.url)
+        if(re.findall("登录后可以查看详细信息",self.Bhtml.get_text())): #寻找html页面中是否有登陆后。。。
             print("未登录")
             return False
         else:
@@ -20,7 +29,7 @@ class select_lesson(internet_Ai):
             return True
 
     def capture_key(self):
-        for form in self.get_html(self.url).find_all('form',{'action':re.compile("m_practice.asp?")}): #寻找所有action中带有m_practice.asp?的form
+        for form in self.Bhtml.find_all('form',{'action':re.compile("m_practice.asp?")}): #寻找所有action中带有m_practice.asp?的form
             # if(form.find_all('input',attrs={'type':'submit'})):
                 self.list.append(form.get('action')) # 保存关键词
                 # print(form.get('action'))
@@ -46,13 +55,15 @@ def main():
     'submit_type':'book_submit'
     }
     iAi=select_lesson('http://epc.ustc.edu.cn/m_practice.asp?second_id=2004')
-    if(iAi.judge_login()):
-        while(True):
+    while(True):
+        if(iAi.judge_login()):
              iAi.capture_key()
              iAi.creat_thread(datas)
              iAi.select_les()
-             time.sleep(5)
+             time.sleep(2)
              print("")
+        else:
+            break
 
 if __name__=="__main__":
     main()

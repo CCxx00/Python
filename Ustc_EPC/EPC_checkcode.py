@@ -8,8 +8,6 @@ import time
 class internet_Ai(object):
     def __init__(self,url):
         self.url=url
-        self.list=[]
-        self.Theard=[]
         self.Session=requests.session()
         os.makedirs('./image/', exist_ok=True)
         self.cookies=self.get_date('cookies.txt')
