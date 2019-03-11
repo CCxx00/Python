@@ -60,7 +60,7 @@ def main():
              iAi.capture_key()
              iAi.creat_thread(datas)
              iAi.select_les()
-             time.sleep(2)
+             time.sleep(1)
              print("")
         else:
             break
