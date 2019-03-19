@@ -1,17 +1,19 @@
 import multiprocessing
 
-def a(c):
-    for i in range(2):
-        c.append('a')
+def a(q):
+    for i in range(100):
+        q.put(i)
 
-def b(c):
+def b(q):
     while True:
-        print(c)
+        print(q.get())
+        if q.empty():
+            break
 
 def main():
-    c=list()
-    p1=multiprocessing.Process(target=a,args=(c,))
-    p2=multiprocessing.Process(target=b,args=(c,))
+    q=multiprocessing.Queue()
+    p1=multiprocessing.Process(target=a,args=(q,))
+    p2=multiprocessing.Process(target=b,args=(q,))
     p1.start()
     p2.start()
 
