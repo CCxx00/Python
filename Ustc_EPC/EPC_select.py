@@ -59,13 +59,11 @@ def main():
     iAi=select_lesson('http://epc.ustc.edu.cn/m_practice.asp?second_id=2001')
     while(True):
         if(iAi.judge_login()):
-            if iAi.capture_key():
-                 iAi.creat_thread(datas)
-                 iAi.select_les()
-                 time.sleep(2)
-                 print("")
-                 # if not self.falg:
-                 #     break
+             iAi.capture_key()
+             iAi.creat_thread(datas)
+             iAi.select_les()
+             time.sleep(1)
+             print("")
         else:
             break
 
