@@ -8,12 +8,14 @@ class select_lesson(internet_Ai):
         super().__init__(url)
         self.list=[]
         self.Theard=[]
+        # self.falg=True
 
     def post_html(self,post_url,post_data): # 改写父类post_html()
         print("开始选课:"+post_url)
         str=super().post_html(post_url,post_data=post_data).get_text() # 调用父类post_html(),比较返回值
         if(re.findall("预约成功",str)):
             print("选课完成:"+post_url)
+            self.falg=False
         elif(re.findall("操作失败：预约时间未到",str)):
             print("选课失败,预约时间未到")
         else:
@@ -54,7 +56,7 @@ def main():
     datas={
     'submit_type':'book_submit'
     }
-    iAi=select_lesson('http://epc.ustc.edu.cn/m_practice.asp?second_id=2004')
+    iAi=select_lesson('http://epc.ustc.edu.cn/m_practice.asp?second_id=2001')
     while(True):
         if(iAi.judge_login()):
              iAi.capture_key()
