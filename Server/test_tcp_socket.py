@@ -4,7 +4,7 @@ def send_msg():
     # create udp socket
     udp_socket=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
     # des_ip,des_port
-    des_ip_port=("192.168.1.102",8080)
+    des_ip_port=("192.168.1.103",4566)
 
     while True:
         # input by keyboard
@@ -33,7 +33,7 @@ def accept_msg():
     udp_socket.close()
 
 def main():
-    accept_msg()
+    send_msg()
 
 if __name__=="__main__":
     main()
