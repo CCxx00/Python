@@ -2,14 +2,14 @@ import socket
 import re
 import threading
 
-class tcp_server():
-    def __init__(self):
+class WSGIServer():
+    def __init__(self,port):
         # create tcp socket
         self.tcp_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         # repeat to use same port
         self.tcp_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         # src_ip,src_port
-        src_ip_port=("",4566)
+        src_ip_port=("",port)
         # tcp server bind ip and port
         self.tcp_socket.bind(src_ip_port)
         # make tcp socket become listen mode
@@ -63,12 +63,19 @@ class tcp_server():
         # close tcp socket
         self.tcp_socket.close()
 
+    def run_server(self):
+        while True:
+            p=threading.Thread(target=self.response,args=(self.listen_client(),))
+            p.start()
+
 def main():
-    server=tcp_server()
-    while True:
-        p=threading.Thread(target=server.response,args=(server.listen_client(),))
-        p.start()
-    server.close_tcp()
+    # import sys
+    # print(sys.argv) # 获取命令行输入值
+    # frame=__import__(frame_name) # 变量导入模块的方法
+    # app=getattr(frame,app_name) # 获取模块相应函数
+    wsgi_server=WSGIServer(4566)
+    wsgi_server.run_server()
+    wsgi_server.close_tcp()
 
 if __name__=="__main__":
     main()
