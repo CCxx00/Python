@@ -39,8 +39,8 @@ int main (int argc, char *argv[])
   NodeContainer csma31=NodeContainer(agg_switch.Get(0),core_switch.Get(0));
   NodeContainer csma32=NodeContainer(agg_switch.Get(1),core_switch.Get(0)); //第三层节点
 
-  // NodeContainer csma311=NodeContainer(agg_switch.Get(0),core_switch.Get(1));
-  // NodeContainer csma322=NodeContainer(agg_switch.Get(1),core_switch.Get(1));
+  NodeContainer csma311=NodeContainer(agg_switch.Get(0),core_switch.Get(1));
+  NodeContainer csma322=NodeContainer(agg_switch.Get(1),core_switch.Get(1));
 
 
   PointToPointHelper pointToPoint;
@@ -51,8 +51,8 @@ int main (int argc, char *argv[])
   p2pDevices[0] = pointToPoint.Install (csma31);
   p2pDevices[1] = pointToPoint.Install (csma32); //第三层链路设置
 
-  // p2pDevices[2] = pointToPoint.Install (csma311);
-  // p2pDevices[3] = pointToPoint.Install (csma322);
+  p2pDevices[2] = pointToPoint.Install (csma311);
+  p2pDevices[3] = pointToPoint.Install (csma322);
 
   CsmaHelper csma;
   csma.SetChannelAttribute ("DataRate", StringValue ("1Mbps"));
@@ -80,12 +80,12 @@ int main (int argc, char *argv[])
   Ipv4InterfaceContainer ip32;
   ip32 = address.Assign (p2pDevices[1]); //设置第三层IP
 
-  // address.SetBase ("192.168.3.0", "255.255.255.0");
-  // Ipv4InterfaceContainer ip311;
-  // ip311 = address.Assign (p2pDevices[2]); //设置第三层IP
-  // address.SetBase ("192.168.4.0", "255.255.255.0");
-  // Ipv4InterfaceContainer ip322;
-  // ip322 = address.Assign (p2pDevices[3]); //设置第三层IP
+  address.SetBase ("192.168.3.0", "255.255.255.0");
+  Ipv4InterfaceContainer ip311;
+  ip311 = address.Assign (p2pDevices[2]); //设置第三层IP
+  address.SetBase ("192.168.4.0", "255.255.255.0");
+  Ipv4InterfaceContainer ip322;
+  ip322 = address.Assign (p2pDevices[3]); //设置第三层IP
 
   address.SetBase ("10.1.1.0", "255.255.255.0");
   Ipv4InterfaceContainer ip21;
@@ -104,6 +104,7 @@ int main (int argc, char *argv[])
   address.SetBase ("10.0.4.0", "255.255.255.0");
   ip1[3] = address.Assign (csmaDevices[3]); //设置第一层IP
 
+  Config::SetDefault("ns3::Ipv4GlobalRouting::RandomEcmpRouting",BooleanValue(true));
   Ipv4GlobalRoutingHelper::PopulateRoutingTables (); //初始化路由表
 
   ApplicationContainer clientApp[8];
